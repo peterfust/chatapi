@@ -1,0 +1,501 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Mobile Device Insurance OpenAPI",
+    "version": "1.1.0",
+    "description": "Mobile Device Insurance OpenAPI",
+    "contact": {
+      "email": "p2p.axa@axa.ch",
+      "name": "P2P",
+      "url": "https://www.axa.ch"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "x-logo": {
+      "url": "https://www.axa.ch/healthcheck/aem/images/logo-AXA.svg"
+    },
+    "x-visibility": "public"
+  },
+  "servers": [
+    {
+      "url": "https://api-sandbox.axa.ch",
+      "description": "Sandbox APIs",
+      "variables": {}
+    },
+    {
+      "url": "https://api.acc.axa.ch",
+      "description": "Non-Production APIs",
+      "variables": {}
+    },
+    {
+      "url": "https://api.axa.ch",
+      "description": "Production APIs",
+      "variables": {}
+    }
+  ],
+  "paths": {
+    "/rest/openapi/mobile-device-insurance/v1/quotes": {
+      "post": {
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MobileDeviceInsuranceQuoteObject"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MobileDeviceInsuranceQuoteObject"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error, e.g. bad request, unauthorized, etc.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AxaError"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error, e.g. internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AxaError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2-client-credentials": [
+              "axa-ch_openapi_mobile-device-insurance_write"
+            ]
+          }
+        ],
+        "operationId": "createMobileDeviceInsuranceQuote",
+        "summary": "create quote",
+        "description": "Create a new mobile device insurance quote."
+      }
+    },
+    "/rest/openapi/mobile-device-insurance/v1/contracts": {
+      "post": {
+        "parameters": [
+          {
+            "name": "token",
+            "description": "Only applicable for a specific integration, skip otherwise.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MobileDeviceInsuranceContractObject"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MobileDeviceInsuranceContractObject"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error, e.g. bad request, unauthorized, etc.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AxaError"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error, e.g. internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AxaError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2-client-credentials": [
+              "axa-ch_openapi_mobile-device-insurance_write"
+            ]
+          }
+        ],
+        "operationId": "createMobileDeviceInsuranceContract",
+        "summary": "create contract",
+        "description": "Create a new mobile device insurance contract."
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "MobileDeviceInsuranceQuote": {
+        "type": "object",
+        "required": [
+          "mobileDevicePrice",
+          "mobileDeviceInsuranceBeginDate",
+          "mobileDeviceInsuranceDuration"
+        ],
+        "properties": {
+          "mobileDevicePrice": {
+            "description": "Price of the mobile device.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Amount"
+              }
+            ],
+            "example": {
+              "amount": 950,
+              "currency": "CHF"
+            }
+          },
+          "mobileDeviceInsuranceBeginDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Begin date of the insurance.",
+            "example": "2023-07-12",
+            "maxLength": 10
+          },
+          "mobileDeviceInsuranceDuration": {
+            "type": "string",
+            "description": "Duration of the insurance.",
+            "example": "TWO_YEARS",
+            "enum": [
+              "ONE_YEAR",
+              "TWO_YEARS"
+            ]
+          },
+          "insurancePremium": {
+            "description": "Premium to be paid for the insurance.",
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Amount"
+              }
+            ],
+            "example": {
+              "amount": 40,
+              "currency": "CHF"
+            }
+          }
+        }
+      },
+      "MobileDeviceInsuranceQuoteObject": {
+        "$ref": "#/components/schemas/MobileDeviceInsuranceQuote"
+      },
+      "MobileDeviceInsuranceContractObject": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MobileDeviceInsuranceQuote"
+          },
+          {
+            "$ref": "#/components/schemas/MobileDeviceInsuranceContract"
+          }
+        ]
+      },
+      "MobileDeviceInsuranceContract": {
+        "type": "object",
+        "required": [
+          "brand",
+          "model",
+          "customer"
+        ],
+        "properties": {
+          "brand": {
+            "type": "string",
+            "description": "Brand of the mobile device.",
+            "example": "Apple"
+          },
+          "model": {
+            "type": "string",
+            "description": "Model name of the mobile device.",
+            "example": "iPhone 13 mini"
+          },
+          "imeiNumber": {
+            "type": "string",
+            "description": "IMEI number of the mobile device.",
+            "example": "AA-BBBBBB-CCCCCC-D"
+          },
+          "externalReference": {
+            "type": "string",
+            "description": "External reference chosen by the cooperation partner.",
+            "example": "ABC-123",
+            "maxLength": 50
+          },
+          "cooperationPartnerInformation": {
+            "$ref": "#/components/schemas/CooperationPartnerInformation"
+          },
+          "customer": {
+            "type": "object",
+            "required": [
+              "firstname",
+              "lastname",
+              "birthdate",
+              "gender",
+              "correspondenceLanguage",
+              "emailAddress",
+              "address"
+            ],
+            "properties": {
+              "firstname": {
+                "type": "string",
+                "example": "Jane",
+                "description": "Firstname of the customer.",
+                "maxLength": 40
+              },
+              "lastname": {
+                "type": "string",
+                "example": "Doe",
+                "description": "Lastname of the customer.",
+                "maxLength": 40
+              },
+              "birthdate": {
+                "type": "string",
+                "format": "date",
+                "example": "1990-07-21",
+                "description": "Date of birth of the customer.",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                "maxLength": 10
+              },
+              "gender": {
+                "type": "string",
+                "enum": [
+                  "MALE",
+                  "FEMALE"
+                ],
+                "example": "FEMALE",
+                "description": "Gender of the customer."
+              },
+              "correspondenceLanguage": {
+                "type": "string",
+                "enum": [
+                  "de",
+                  "it",
+                  "fr",
+                  "en"
+                ],
+                "example": "de",
+                "description": "Correspondence language chosen by the partner according to ISO 639-1."
+              },
+              "phoneNumber": {
+                "type": "string",
+                "example": "+41 44 123 45 67",
+                "description": "Phone number",
+                "maxLength": 30
+              },
+              "emailAddress": {
+                "type": "string",
+                "format": "email",
+                "example": "jane.doe@example.com",
+                "description": "email address",
+                "maxLength": 241
+              },
+              "address": {
+                "$ref": "#/components/schemas/AddressChLi"
+              }
+            }
+          }
+        }
+      },
+      "CooperationPartnerInformation": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Name of the cooperation partner",
+            "example": "Blockwork"
+          },
+          "branch": {
+            "type": "string",
+            "description": "Optional branch of the partner from where the request was sent.",
+            "example": "8400-1"
+          }
+        }
+      },
+      "AddressChLi": {
+        "type": "object",
+        "required": [
+          "streetName",
+          "postCode",
+          "town",
+          "country"
+        ],
+        "properties": {
+          "streetName": {
+            "type": "string",
+            "example": "Bundesplatz",
+            "description": "Street name",
+            "maxLength": 60
+          },
+          "houseNumber": {
+            "type": "string",
+            "example": "1",
+            "description": "House number, including letters if applicable",
+            "maxLength": 10
+          },
+          "postCode": {
+            "type": "string",
+            "example": "3000",
+            "description": "Valid post code of the customer's current residence.",
+            "maxLength": 10
+          },
+          "town": {
+            "type": "string",
+            "example": "Bern",
+            "description": "Name of the town",
+            "maxLength": 40
+          },
+          "country": {
+            "type": "string",
+            "enum": [
+              "CH",
+              "LI"
+            ],
+            "example": "CH",
+            "description": "Country of residence according to ISO 3166-1.",
+            "maxLength": 2
+          }
+        }
+      },
+      "Amount": {
+        "type": "object",
+        "required": [
+          "amount",
+          "currency"
+        ],
+        "properties": {
+          "amount": {
+            "type": "number",
+            "format": "decimal",
+            "example": 12.55,
+            "description": "amount value"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Currency"
+          }
+        }
+      },
+      "Currency": {
+        "type": "string",
+        "enum": [
+          "CHF"
+        ],
+        "example": "CHF",
+        "description": "Currency of monetary value according to ISO 4217."
+      },
+      "AxaError": {
+        "type": "object",
+        "required": [
+          "errorCode",
+          "errorMessage"
+        ],
+        "properties": {
+          "errorCode": {
+            "type": "string",
+            "example": "VALIDATION_ERROR",
+            "description": "Unique error code."
+          },
+          "errorMessage": {
+            "type": "string",
+            "example": "Input validation failed",
+            "description": "Short description of the error."
+          },
+          "errorReasons": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "message",
+                "code"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Attribute 'xxxx' must not be longer than 50 chars."
+                },
+                "code": {
+                  "type": "string",
+                  "example": "ERROR_012",
+                  "description": "Unique reason code for this specific reason."
+                },
+                "location": {
+                  "type": "string",
+                  "example": "/rootLevel/xxxx",
+                  "description": "Location within message where the error is related to."
+                }
+              }
+            },
+            "description": "List of error reasons if multiple reasons are related to the same error."
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "oauth2-client-credentials": {
+        "type": "oauth2",
+        "description": "Authorization: Bearer <token>",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://login.axa-ch.intraxa/as/token.oauth2",
+            "scopes": {
+              "axa-ch_openapi_mobile-device-insurance_read": "openapi mobile device insurance read scope",
+              "axa-ch_openapi_mobile-device-insurance_write": "openapi mobile device insurance write scope"
+            }
+          }
+        }
+      }
+    },
+    "responses": {},
+    "parameters": {}
+  },
+  "tags": [
+    {
+      "name": "mobile device insurance",
+      "description": "mobile device insurance product"
+    }
+  ],
+  "externalDocs": {
+    "description": "Developer documentation for AXA OpenAPI",
+    "url": "https://secure.axa.ch/developer"
+  },
+  "security": [
+    {
+      "oauth2-client-credentials": []
+    }
+  ]
+}

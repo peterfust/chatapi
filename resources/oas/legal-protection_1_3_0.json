@@ -1,0 +1,1049 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Legal Protection OpenAPI",
+    "version": "1.3.0",
+    "description": "Legal Protection OpenAPI",
+    "contact": {
+      "email": "p2p.axa@axa.ch",
+      "name": "P2P",
+      "url": "https://www.axa.ch"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "x-logo": {
+      "url": "https://www.axa.ch/healthcheck/aem/images/logo-AXA.svg"
+    },
+    "x-visibility": "public"
+  },
+  "servers": [
+    {
+      "url": "https://api-sandbox.axa.ch",
+      "description": "Sandbox APIs",
+      "variables": {}
+    },
+    {
+      "url": "https://api.acc.axa.ch",
+      "description": "Non-Production APIs",
+      "variables": {}
+    },
+    {
+      "url": "https://api.axa.ch",
+      "description": "Production APIs",
+      "variables": {}
+    }
+  ],
+  "paths": {
+    "/rest/openapi/legal-protection/v1/quotes": {
+      "post": {
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LegalProtectionQuote"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LegalProtectionQuote"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error, e.g. bad request, unauthorized, etc.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AxaError"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error, e.g. internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AxaError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2-client-credentials": [
+              "axa-ch_openapi_legal-protection_write"
+            ]
+          }
+        ],
+        "operationId": "createQuote",
+        "summary": "create quote",
+        "description": "Create a new legal protection quote."
+      }
+    },
+    "/rest/openapi/legal-protection/v1/contractReferences": {
+      "post": {
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LegalProtectionContractReference"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LegalProtectionContractReference"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error, e.g. bad request, unauthorized, etc.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AxaError"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error, e.g. internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AxaError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2-client-credentials": [
+              "axa-ch_openapi_legal-protection_write"
+            ]
+          }
+        ],
+        "operationId": "createContractReference",
+        "summary": "create contract reference",
+        "description": "Create a new legal protection contract reference."
+      }
+    },
+    "/rest/openapi/legal-protection/v1/contractReferences/{contractReferenceId}": {
+      "patch": {
+        "parameters": [
+          {
+            "name": "contractReferenceId",
+            "in": "path",
+            "required": true,
+            "description": "Id of an existing contract reference.",
+            "schema": {
+              "example": "e8406425-9cff-4f08-bf7b-f4737c3c0cd5",
+              "type": "string"
+            }
+          },
+          {
+            "name": "contractReferenceIdType",
+            "in": "query",
+            "required": false,
+            "description": "Flag if the contractReferenceId in the path is an AXA-ID or an external ID set by the cooperation partner at contract reference creation time. Default is axaId.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "externalId",
+                "axaId"
+              ],
+              "default": "axaId",
+              "example": "externalId"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchBody"
+              },
+              "example": [
+                {
+                  "op": "replace",
+                  "path": "/insurancePremium/amount",
+                  "value": 230.2
+                }
+              ]
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation."
+          },
+          "4XX": {
+            "description": "Client error, e.g. bad request, unauthorized, etc.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AxaError"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error, e.g. internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AxaError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2-client-credentials": [
+              "axa-ch_openapi_legal-protection_write"
+            ]
+          }
+        ],
+        "operationId": "updateContractReference",
+        "summary": "update contract reference",
+        "description": "Update a legal protection contract reference. The update request is based on RFC 6902, limited to the operations \"add\" and \"replace\"."
+      }
+    },
+    "/rest/openapi/legal-protection/v1/invoiceReferences": {
+      "post": {
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LegalProtectionInvoiceReference"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LegalProtectionInvoiceReference"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error, e.g. bad request, unauthorized, etc.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AxaError"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error, e.g. internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AxaError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2-client-credentials": [
+              "axa-ch_openapi_legal-protection_write"
+            ]
+          }
+        ],
+        "operationId": "createInvoiceReference",
+        "summary": "create invoice reference",
+        "description": "Create a new legal protection invoice reference."
+      }
+    },
+    "/rest/openapi/legal-protection/v1/invoiceReferences/{invoiceId}": {
+      "patch": {
+        "parameters": [
+          {
+            "name": "invoiceId",
+            "in": "path",
+            "required": true,
+            "description": "Id of an existing invoice reference.",
+            "schema": {
+              "example": "4fe48cab-5acb-4406-9658-9ad7990a7054",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchBody"
+              },
+              "example": [
+                {
+                  "op": "replace",
+                  "path": "/billingState",
+                  "value": "PAID"
+                }
+              ]
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation."
+          },
+          "4XX": {
+            "description": "Client error, e.g. bad request, unauthorized, etc.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AxaError"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error, e.g. internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AxaError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2-client-credentials": [
+              "axa-ch_openapi_legal-protection_write"
+            ]
+          }
+        ],
+        "operationId": "updateInvoiceReference",
+        "summary": "update invoice reference",
+        "description": "Update a legal protection invoice reference. The update request is based on RFC 6902, limited to the operations \"add\" and \"replace\"."
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LegalProtectionQuote": {
+        "type": "object",
+        "required": [
+          "productVariant",
+          "turnover",
+          "industryCode",
+          "cumulatedWorkloadPercentage",
+          "legalProtectionBeginDate"
+        ],
+        "properties": {
+          "productVariant": {
+            "type": "string",
+            "example": "LEGAL_PROTECTION_COMPANY",
+            "description": "Selected product variant.",
+            "enum": [
+              "LEGAL_PROTECTION_COMPANY"
+            ]
+          },
+          "turnover": {
+            "description": "Yearly company turnover in CHF",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Amount"
+              }
+            ],
+            "example": {
+              "amount": 125000,
+              "currency": "CHF"
+            }
+          },
+          "industryCode": {
+            "type": "number",
+            "description": "Industry code representing the company's industry branch.",
+            "example": 12,
+            "minimum": 1,
+            "maximum": 24
+          },
+          "cumulatedWorkloadPercentage": {
+            "type": "number",
+            "description": "Cumulated workload percentage of all employees",
+            "example": 4250
+          },
+          "landlordProtection": {
+            "$ref": "#/components/schemas/LandlordProtectionQuote"
+          },
+          "legalProtectionBeginDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Begin date of the legal protection.",
+            "example": "2021-01-01"
+          },
+          "insurancePremium": {
+            "description": "Premium to be paid for this insurance.",
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Amount"
+              },
+              {
+                "$ref": "#/components/schemas/PeriodicityYearObject"
+              }
+            ],
+            "example": {
+              "amount": 930.05,
+              "currency": "CHF",
+              "periodicity": "PER_YEAR"
+            }
+          },
+          "insurancePremiumsPerRisk": {
+            "type": "array",
+            "readOnly": true,
+            "description": "List of insurance premiums per risk",
+            "items": {
+              "type": "object",
+              "readOnly": true,
+              "required": [
+                "riskCode",
+                "coverageType",
+                "insurancePremium"
+              ],
+              "properties": {
+                "riskCode": {
+                  "type": "number",
+                  "readOnly": true,
+                  "description": "Dedicated code per risk"
+                },
+                "coverageType": {
+                  "type": "string",
+                  "enum": [
+                    "BASIC_COVERAGE",
+                    "EXTENDED_COVERAGE"
+                  ],
+                  "readOnly": true,
+                  "description": "Type of coverage for this risk, only applicable for riskCode 79102"
+                },
+                "insurancePremium": {
+                  "description": "Premium to be paid for this insurance for this risk.",
+                  "readOnly": true,
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Amount"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PeriodicityYearObject"
+                    }
+                  ]
+                }
+              }
+            },
+            "example": [
+              {
+                "riskCode": 79018,
+                "insurancePremium": {
+                  "amount": 583,
+                  "currency": "CHF",
+                  "periodicity": "PER_YEAR"
+                }
+              },
+              {
+                "riskCode": 79024,
+                "insurancePremium": {
+                  "amount": 212.65,
+                  "currency": "CHF",
+                  "periodicity": "PER_YEAR"
+                }
+              },
+              {
+                "riskCode": 79105,
+                "insurancePremium": {
+                  "amount": 40.2,
+                  "currency": "CHF",
+                  "periodicity": "PER_YEAR"
+                }
+              },
+              {
+                "riskCode": 79101,
+                "insurancePremium": {
+                  "amount": 55.45,
+                  "currency": "CHF",
+                  "periodicity": "PER_YEAR"
+                }
+              },
+              {
+                "riskCode": 79102,
+                "insurancePremium": {
+                  "amount": 38.75,
+                  "currency": "CHF",
+                  "periodicity": "PER_YEAR"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "LegalProtectionContractReference": {
+        "type": "object",
+        "required": [
+          "productVariant",
+          "partnerId",
+          "legalProtectionBeginDate",
+          "insurancePremium"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique ID of the contract reference",
+            "example": "ABC123",
+            "readOnly": true
+          },
+          "productVariant": {
+            "type": "string",
+            "example": "LEGAL_PROTECTION_INDIVIDUAL",
+            "description": "Selected product variant.",
+            "enum": [
+              "LEGAL_PROTECTION_COMPANY",
+              "LEGAL_PROTECTION_INDIVIDUAL"
+            ]
+          },
+          "coverage": {
+            "type": "string",
+            "example": "SINGLE",
+            "description": "Selected coverage, only applicable in case of productType = LEGAL_PROTECTION_INDIVIDUAL",
+            "enum": [
+              "SINGLE",
+              "HOUSEHOLD"
+            ]
+          },
+          "partnerId": {
+            "type": "number",
+            "example": 7895684,
+            "description": "Unique id to identify the partner within AXA Systems."
+          },
+          "externalContractReferenceId": {
+            "type": "string",
+            "example": "V22/156",
+            "description": "Reference to the contract in the external system."
+          },
+          "legalProtectionBeginDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Begin date of the legal protection.",
+            "example": "2023-06-15"
+          },
+          "legalProtectionEndDate": {
+            "type": "string",
+            "format": "date",
+            "description": "End date of the legal protection.",
+            "example": "2025-11-22"
+          },
+          "landlordProtection": {
+            "$ref": "#/components/schemas/LandlordProtectionContractReference"
+          },
+          "insurancePremium": {
+            "description": "Premium to be paid for this insurance.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Amount"
+              },
+              {
+                "$ref": "#/components/schemas/PeriodicityYearObject"
+              }
+            ],
+            "example": {
+              "amount": 121.05,
+              "currency": "CHF",
+              "periodicity": "PER_YEAR"
+            }
+          }
+        }
+      },
+      "LegalProtectionInvoiceReference": {
+        "type": "object",
+        "required": [
+          "invoiceId",
+          "axaContractReferenceId",
+          "externalContractId",
+          "invoiceType",
+          "netAmount",
+          "grossAmount",
+          "stampDuty",
+          "discounts",
+          "grossProductPrice",
+          "billingStartDate",
+          "billingEndDate",
+          "billingState",
+          "owedAmount",
+          "expectedPayments"
+        ],
+        "properties": {
+          "invoiceId": {
+            "type": "string",
+            "example": "V22/123-2024",
+            "description": "Id of the invoice, defined by the cooperation partner."
+          },
+          "axaContractReferenceId": {
+            "type": "string",
+            "example": "ABC123",
+            "description": "Reference to the AXA contract Id."
+          },
+          "externalContractId": {
+            "type": "string",
+            "example": "V22/123",
+            "description": "ID of the external contract, defined by the cooperation partner."
+          },
+          "invoiceType": {
+            "type": "string",
+            "description": "Defines if billing is referring to an initial invoice or renewal of a invoice.",
+            "enum": [
+              "INITIAL",
+              "RENEWAL"
+            ],
+            "example": "INITIAL"
+          },
+          "netAmount": {
+            "type": "number",
+            "format": "double",
+            "example": 123.12,
+            "description": "Net amount (incl. discounts) for the full billing cycle."
+          },
+          "grossProductPrice": {
+            "type": "number",
+            "format": "double",
+            "example": 123.12,
+            "description": "Gross amount (excl. discounts) for the full billing cycle."
+          },
+          "stampDuty": {
+            "type": "number",
+            "format": "double",
+            "example": 123.12,
+            "description": "Stamp duty  for the full billing cycle."
+          },
+          "discounts": {
+            "type": "number",
+            "format": "double",
+            "example": 123.12,
+            "description": "Discounts to be applied  for the full billing cycle."
+          },
+          "grossAmount": {
+            "type": "number",
+            "format": "double",
+            "example": 123.12,
+            "description": "Final amount owed in total (incl. discounts, stampDuty) for the full billing cycle."
+          },
+          "billingStartDate": {
+            "type": "string",
+            "format": "date",
+            "example": "2024-01-01",
+            "description": "Start of the billing period, i.e. the start of the coverage period of the related contract."
+          },
+          "billingEndDate": {
+            "type": "string",
+            "format": "date",
+            "example": "2024-12-31",
+            "description": "End of the billing period, i.e. the end of the coverage period of the related contract."
+          },
+          "billingState": {
+            "type": "string",
+            "example": "PENDING",
+            "description": "The current state of the payments related to the billing process (PENDING = outstanding amount is not yet fully paid, PAID = outstanding amount is fully paid)",
+            "enum": [
+              "PENDING",
+              "PAID",
+              "CANCELLED"
+            ]
+          },
+          "owedAmount": {
+            "type": "number",
+            "format": "double",
+            "example": 123.12,
+            "description": "Reflects the amount still owed, i.e. i) in case of a new and unpaid bill grossAmount = owedAmount, ii) in case of partial payment the owed amount is reduced by the occurred partial payment amount, iii) in case of a full paid bill the owedAmount = 0.0 iv) in case of an intrayear termination the owedAmount is reduced accordingly"
+          },
+          "paidAmount": {
+            "type": "number",
+            "format": "double",
+            "example": 123.12,
+            "description": "Reflects the amount already paid"
+          },
+          "expectedPayments": {
+            "type": "array",
+            "description": "Array of objects (dates, amounts) for expected payments. In case of 'planned' partial payments of a bill an object for each due date of these partial payments shall be sent.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "type": "number",
+                  "format": "double",
+                  "example": 123.23,
+                  "description": "Amount of expected payment."
+                },
+                "dueDate": {
+                  "type": "string",
+                  "format": "date",
+                  "example": "2024-01-01",
+                  "description": "Due date of expected payment."
+                }
+              }
+            }
+          },
+          "paymentType": {
+            "type": "string",
+            "description": "Used payment method. Might vary for each bill, but not for each payment.",
+            "enum": [
+              "CREDIT_CARD",
+              "INVOICE",
+              "TWINT",
+              "POSTFINANCE"
+            ],
+            "example": "CREDIT_CARD"
+          },
+          "dunningLevel": {
+            "type": "string",
+            "example": "REMINDER",
+            "description": "Level of dunning applied. None if no reminder, overdue notice or enforcement.",
+            "enum": [
+              "REMINDER",
+              "OVERDUE_NOTICE",
+              "DEBT_ENFORCEMENT"
+            ]
+          },
+          "companyInformation": {
+            "required": [
+              "industryCode",
+              "turnover",
+              "cumulatedWorkloadPercentage"
+            ],
+            "properties": {
+              "industryCode": {
+                "type": "integer",
+                "description": "NOGA-Industrycode",
+                "example": 107100
+              },
+              "turnover": {
+                "type": "number",
+                "format": "double",
+                "description": "Annual turnover in CHF.",
+                "example": 123000
+              },
+              "cumulatedWorkloadPercentage": {
+                "type": "number",
+                "description": "Cumulated workload percentage of all employees.",
+                "example": 100
+              }
+            }
+          }
+        }
+      },
+      "PatchBody": {
+        "description": "Patch body according to RFC 6902, limited to the operations \"add\", \"replace\" and \"remove\".",
+        "type": "array",
+        "items": {
+          "oneOf": [
+            {
+              "$ref": "#/components/schemas/PatchUpdateOperation"
+            },
+            {
+              "$ref": "#/components/schemas/PatchRemoveOperation"
+            }
+          ]
+        }
+      },
+      "LandlordProtectionQuote": {
+        "type": "object",
+        "description": "Landlord protection information. Leave out if landlord protection is not needed.",
+        "required": [
+          "landlordProtectionIncluded",
+          "totalNumberOfUnits"
+        ],
+        "properties": {
+          "landlordProtectionIncluded": {
+            "type": "boolean",
+            "description": "Flag if landlord protection is included.",
+            "example": true
+          },
+          "totalNumberOfUnits": {
+            "type": "number",
+            "description": "Total number of units in all insured properties.",
+            "example": 2
+          }
+        }
+      },
+      "LandlordProtectionContractReference": {
+        "type": "object",
+        "description": "Landlord protection information. Leave out if landlord protection is not needed.",
+        "required": [
+          "landlordProtectionIncluded",
+          "properties"
+        ],
+        "properties": {
+          "landlordProtectionIncluded": {
+            "type": "boolean",
+            "description": "Flag if landlord protection is included.",
+            "example": true
+          },
+          "properties": {
+            "type": "array",
+            "description": "Information about insured properties.",
+            "items": {
+              "type": "object",
+              "required": [
+                "numberOfUnits",
+                "address"
+              ],
+              "properties": {
+                "numberOfUnits": {
+                  "type": "number",
+                  "description": "Number of units in the property.",
+                  "example": 2
+                },
+                "address": {
+                  "$ref": "#/components/schemas/AddressChLi"
+                }
+              }
+            }
+          }
+        }
+      },
+      "AddressChLi": {
+        "type": "object",
+        "required": [
+          "streetName",
+          "postCode",
+          "town",
+          "country"
+        ],
+        "properties": {
+          "streetName": {
+            "type": "string",
+            "example": "Bundesplatz",
+            "description": "Street name",
+            "maxLength": 60
+          },
+          "houseNumber": {
+            "type": "string",
+            "example": "1",
+            "description": "House number, including letters if applicable",
+            "maxLength": 10
+          },
+          "postCode": {
+            "type": "string",
+            "example": "3000",
+            "description": "Valid post code of the customer's current residence.",
+            "maxLength": 10
+          },
+          "town": {
+            "type": "string",
+            "example": "Bern",
+            "description": "Name of the town",
+            "maxLength": 40
+          },
+          "country": {
+            "type": "string",
+            "enum": [
+              "CH",
+              "LI"
+            ],
+            "example": "CH",
+            "description": "Country of residence according to ISO 3166-1.",
+            "maxLength": 2
+          }
+        }
+      },
+      "PatchUpdateOperation": {
+        "description": "Patch body according to RFC 6902, limited to the operations \"add\" and \"replace\".",
+        "type": "object",
+        "required": [
+          "value",
+          "op",
+          "path"
+        ],
+        "properties": {
+          "path": {
+            "description": "A JSON Pointer path.",
+            "type": "string"
+          },
+          "op": {
+            "description": "The operation to perform.",
+            "type": "string",
+            "enum": [
+              "add",
+              "replace"
+            ]
+          },
+          "value": {
+            "description": "The value to add or replace."
+          }
+        }
+      },
+      "PatchRemoveOperation": {
+        "description": "Patch body according to RFC 6902, limited to the operations \"remove\".",
+        "type": "object",
+        "required": [
+          "op",
+          "path"
+        ],
+        "properties": {
+          "path": {
+            "description": "A JSON Pointer path.",
+            "type": "string"
+          },
+          "op": {
+            "description": "The operation to perform.",
+            "type": "string",
+            "enum": [
+              "remove"
+            ]
+          }
+        }
+      },
+      "Amount": {
+        "type": "object",
+        "required": [
+          "amount",
+          "currency"
+        ],
+        "properties": {
+          "amount": {
+            "type": "number",
+            "format": "decimal",
+            "example": 12.55,
+            "description": "amount value"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Currency"
+          }
+        }
+      },
+      "PeriodicityYear": {
+        "type": "string",
+        "enum": [
+          "PER_YEAR"
+        ],
+        "example": "PER_YEAR",
+        "description": "Periodicity of an object"
+      },
+      "PeriodicityYearObject": {
+        "type": "object",
+        "required": [
+          "periodicity"
+        ],
+        "properties": {
+          "periodicity": {
+            "$ref": "#/components/schemas/PeriodicityYear"
+          }
+        }
+      },
+      "Currency": {
+        "type": "string",
+        "enum": [
+          "CHF"
+        ],
+        "example": "CHF",
+        "description": "Currency of monetary value according to ISO 4217."
+      },
+      "AxaError": {
+        "type": "object",
+        "required": [
+          "errorCode",
+          "errorMessage"
+        ],
+        "properties": {
+          "errorCode": {
+            "type": "string",
+            "example": "VALIDATION_ERROR",
+            "description": "Unique error code."
+          },
+          "errorMessage": {
+            "type": "string",
+            "example": "Input validation failed",
+            "description": "Short description of the error."
+          },
+          "errorReasons": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "message",
+                "code"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Attribute 'xxxx' must not be longer than 50 chars."
+                },
+                "code": {
+                  "type": "string",
+                  "example": "ERROR_012",
+                  "description": "Unique reason code for this specific reason."
+                },
+                "location": {
+                  "type": "string",
+                  "example": "/rootLevel/xxxx",
+                  "description": "Location within message where the error is related to."
+                }
+              }
+            },
+            "description": "List of error reasons if multiple reasons are related to the same error."
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "oauth2-client-credentials": {
+        "type": "oauth2",
+        "description": "Authorization: Bearer <token>",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://maam.axa.com/maam/v2/token",
+            "scopes": {
+              "axa-ch_openapi_legal-protection_read": "openapi legal protection read scope",
+              "axa-ch_openapi_legal-protection_write": "openapi legal protection write scope"
+            }
+          }
+        }
+      }
+    },
+    "responses": {},
+    "parameters": {}
+  },
+  "externalDocs": {
+    "description": "Developer documentation for AXA OpenAPI",
+    "url": "https://secure.axa.ch/developer"
+  },
+  "security": [
+    {
+      "oauth2-client-credentials": []
+    }
+  ]
+}

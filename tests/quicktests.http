@@ -1,0 +1,44 @@
+# Read available APIs
+GET http://localhost:3000/apis
+Accept: application/json
+
+###
+# Question about the API - no request generated
+POST http://localhost:3000/questions
+Content-Type: application/json
+
+{
+    "question": "ist quartalsweise erlaubt für einzelpolice",
+    "oas": "Rental Guarantee - 2.1.0"
+}
+
+###
+# Request generation with an initial question
+POST http://localhost:3000/questions
+Content-Type: application/json
+
+{
+    "question": "Erstell mir einen Request für ein Angebot mit einer Versicherungssumme von 2012.20 CHF",
+    "oas": "Rental Guarantee - 2.1.0"
+}
+
+###
+# Request generation with an follow-up question
+POST http://localhost:3000/questions
+Content-Type: application/json
+
+{
+    "question": "Ändere die Währung auf EUR",
+    "oas": "Rental Guarantee - 2.1.0",
+    "json_document": {
+        "contractType": "GROUP_CONTRACT",
+        "depositAmount": {
+            "amount": 1241,
+            "currency": "CHF"
+        },
+        "propertyManagerId": "123-ABC",
+        "propertyOwnerId": "123-ABC",
+        "tenantType": "PRIVATE",
+        "insurancePremiumPeriodicity": "PER_YEAR"
+    }
+}

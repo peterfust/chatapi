@@ -1,0 +1,1304 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Rental Guarantee OpenAPI",
+    "version": "2.1.0",
+    "description": "Rental Guarantee OpenAPI",
+    "contact": {
+      "email": "p2p.axa@axa.ch",
+      "name": "P2P",
+      "url": "https://www.axa.ch"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "x-logo": {
+      "url": "https://www.axa.ch/healthcheck/aem/images/logo-AXA.svg"
+    },
+    "x-visibility": "public"
+  },
+  "servers": [
+    {
+      "url": "https://api-sandbox.axa.ch",
+      "description": "Sandbox APIs",
+      "variables": {}
+    },
+    {
+      "url": "https://api.acc.axa.ch",
+      "description": "Non-Production APIs",
+      "variables": {}
+    },
+    {
+      "url": "https://api.axa.ch",
+      "description": "Production APIs",
+      "variables": {}
+    }
+  ],
+  "paths": {
+    "/rest/openapi/rental-guarantee/v2/quotes": {
+      "post": {
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/RentalGuaranteeQuoteIndividual"
+                  },
+                  {
+                    "$ref": "#/components/schemas/RentalGuaranteeQuoteGroup"
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "contractType",
+                  "mapping": {
+                    "INDIVIDUAL_CONTRACT": "#/components/schemas/RentalGuaranteeQuoteIndividual",
+                    "GROUP_CONTRACT": "#/components/schemas/RentalGuaranteeQuoteGroup"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/RentalGuaranteeQuoteIndividual"
+                    },
+                    {
+                      "$ref": "#/components/schemas/RentalGuaranteeQuoteGroup"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "contractType",
+                    "mapping": {
+                      "INDIVIDUAL_CONTRACT": "#/components/schemas/RentalGuaranteeQuoteIndividual",
+                      "GROUP_CONTRACT": "#/components/schemas/RentalGuaranteeQuoteGroup"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error, e.g. bad request, unauthorized, etc.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AxaError"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error, e.g. internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AxaError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2-client-credentials": [
+              "axa-ch_openapi_rental-guarantee_write"
+            ]
+          }
+        ],
+        "operationId": "createQuote",
+        "summary": "create quote",
+        "description": "Create a new rental guarantee quote."
+      }
+    },
+    "/rest/openapi/rental-guarantee/v2/contracts": {
+      "post": {
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/RentalGuaranteeContractIndividual"
+                  },
+                  {
+                    "$ref": "#/components/schemas/RentalGuaranteeContractGroup"
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "contractType",
+                  "mapping": {
+                    "INDIVIDUAL_CONTRACT": "#/components/schemas/RentalGuaranteeContractIndividual",
+                    "GROUP_CONTRACT": "#/components/schemas/RentalGuaranteeContractGroup"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/RentalGuaranteeContractIndividual"
+                    },
+                    {
+                      "$ref": "#/components/schemas/RentalGuaranteeContractGroup"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "contractType",
+                    "mapping": {
+                      "INDIVIDUAL_CONTRACT": "#/components/schemas/RentalGuaranteeContractIndividual",
+                      "GROUP_CONTRACT": "#/components/schemas/RentalGuaranteeContractGroup"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error, e.g. bad request, unauthorized, etc.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AxaError"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error, e.g. internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AxaError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2-client-credentials": [
+              "axa-ch_openapi_rental-guarantee_write"
+            ]
+          }
+        ],
+        "operationId": "createContract",
+        "summary": "create contract",
+        "description": "Create a new rental guarantee contract."
+      }
+    },
+    "/rest/openapi/rental-guarantee/v2/contracts/{contractId}/terminate": {
+      "post": {
+        "parameters": [
+          {
+            "name": "contractId",
+            "in": "path",
+            "required": true,
+            "description": "Id of an existing rental guarantee contract.",
+            "schema": {
+              "example": "e8406425-9cff-4f08-bf7b-f4737c3c0cd5",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RentalGuaranteeContractTermination"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RentalGuaranteeContractGroup"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error, e.g. bad request, unauthorized, etc.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AxaError"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error, e.g. internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AxaError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2-client-credentials": [
+              "axa-ch_openapi_rental-guarantee_write"
+            ]
+          }
+        ],
+        "operationId": "terminateContract",
+        "summary": "terminate contract",
+        "description": "Terminate a rental guarantee contract."
+      }
+    },
+    "/rest/openapi/rental-guarantee/v2/contracts/{contractId}/documents": {
+      "get": {
+        "parameters": [
+          {
+            "name": "contractId",
+            "in": "path",
+            "required": true,
+            "description": "Id of an existing rental guarantee contract.",
+            "schema": {
+              "example": "e8406425-9cff-4f08-bf7b-f4737c3c0cd5",
+              "type": "string"
+            }
+          },
+          {
+            "name": "propertyManagerId",
+            "in": "query",
+            "required": false,
+            "description": "ID referencing the property manager",
+            "schema": {
+              "type": "string",
+              "example": "123-ABC",
+              "maxLength": 50
+            }
+          },
+          {
+            "name": "propertyOwnerId",
+            "in": "query",
+            "required": false,
+            "description": "ID referencing the property owner",
+            "schema": {
+              "type": "string",
+              "example": "123-ABC",
+              "maxLength": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error, e.g. bad request, unauthorized, etc.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AxaError"
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error, e.g. internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AxaError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2-client-credentials": [
+              "axa-ch_openapi_rental-guarantee_read"
+            ]
+          }
+        ],
+        "operationId": "readContractDocuments",
+        "summary": "read contract documents",
+        "description": "Read documents related to a rental guarantee contract."
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RentalGuaranteeQuoteGroup": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RentalGuaranteeBaseGroup"
+          },
+          {
+            "$ref": "#/components/schemas/RentalGuaranteeQuoteGroupProperties"
+          }
+        ]
+      },
+      "RentalGuaranteeContractGroup": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RentalGuaranteeBaseGroup"
+          },
+          {
+            "$ref": "#/components/schemas/RentalGuaranteeContractGroupProperties"
+          }
+        ]
+      },
+      "RentalGuaranteeBaseGroup": {
+        "type": "object",
+        "required": [
+          "contractType",
+          "depositAmount"
+        ],
+        "properties": {
+          "contractType": {
+            "type": "string",
+            "description": "type of contract (individual or group)",
+            "enum": [
+              "GROUP_CONTRACT"
+            ]
+          },
+          "depositAmount": {
+            "description": "Amount of the rental deposit.",
+            "type": "object",
+            "required": [
+              "amount",
+              "currency"
+            ],
+            "properties": {
+              "amount": {
+                "type": "integer",
+                "example": 1241,
+                "minimum": 0,
+                "maximum": 999999,
+                "description": "Deposit amount value"
+              },
+              "currency": {
+                "$ref": "#/components/schemas/Currency"
+              }
+            }
+          },
+          "propertyManagerId": {
+            "type": "string",
+            "description": "ID referencing the property manager. This can be an AXA-ID or an external ID where AXA is responsible for correct mapping.",
+            "example": "123-ABC",
+            "maxLength": 50
+          },
+          "propertyOwnerId": {
+            "type": "string",
+            "description": "ID referencing the property owner. This can be an AXA-ID or an external ID where AXA is responsible for correct mapping.",
+            "example": "123-ABC",
+            "maxLength": 50
+          },
+          "insurancePremium": {
+            "description": "Premium to be paid for this insurance which is returned as response.",
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Amount"
+              },
+              {
+                "$ref": "#/components/schemas/PeriodicityMonthQuarterHalfYearYearObject"
+              }
+            ],
+            "example": {
+              "amount": 20.55,
+              "currency": "CHF",
+              "periodicity": "PER_YEAR"
+            }
+          }
+        }
+      },
+      "RentalGuaranteeQuoteGroupProperties": {
+        "type": "object",
+        "required": [
+          "tenantType"
+        ],
+        "properties": {
+          "tenantType": {
+            "type": "string",
+            "description": "Type of the tenant",
+            "enum": [
+              "PRIVATE",
+              "COMPANY"
+            ],
+            "example": "PRIVATE"
+          },
+          "insurancePremiumPeriodicity": {
+            "type": "string",
+            "description": "Optional periodicity of the insurance premium that should be returned by the API. If not set PER_YEAR is used as default.",
+            "enum": [
+              "PER_MONTH",
+              "PER_QUARTER",
+              "PER_HALF_YEAR",
+              "PER_YEAR"
+            ],
+            "example": "PER_YEAR"
+          }
+        }
+      },
+      "RentalGuaranteeContractGroupProperties": {
+        "type": "object",
+        "required": [
+          "tenant",
+          "rentalProperty",
+          "rentalGuaranteeStartDate"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "e8406425-9cff-4f08-bf7b-f4737c3c0cd5",
+            "readOnly": true,
+            "description": "Unique contract id. This id can be used for subsequent API calls where a contract must be referenced."
+          },
+          "rentalGuaranteeStartDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Start date of the rental period.",
+            "example": "2022-04-01"
+          },
+          "rentalGuaranteeEndDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Optional end date of the rental guarantee period, only if already known.",
+            "example": "2023-06-30"
+          },
+          "insurancePremiumPeriodicity": {
+            "type": "string",
+            "description": "Optional periodicity of the insurance premium that should be returned by the API. If not set PER_YEAR is used as default.",
+            "enum": [
+              "PER_YEAR"
+            ],
+            "example": "PER_YEAR"
+          },
+          "tenant": {
+            "discriminator": {
+              "propertyName": "tenantType",
+              "mapping": {
+                "PRIVATE": "#/components/schemas/TenantPrivate",
+                "COMPANY": "#/components/schemas/TenantCompany"
+              }
+            },
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TenantPrivate"
+              },
+              {
+                "$ref": "#/components/schemas/TenantCompany"
+              }
+            ]
+          },
+          "rentalProperty": {
+            "type": "object",
+            "description": "Rental property information",
+            "required": [
+              "streetName",
+              "postCode",
+              "town",
+              "country"
+            ],
+            "properties": {
+              "streetName": {
+                "type": "string",
+                "description": "Street name",
+                "maxLength": 50,
+                "example": "Bahnhofsstrasse"
+              },
+              "houseNumber": {
+                "type": "string",
+                "description": "House number, including letters if applicable",
+                "maxLength": 12,
+                "example": "12a"
+              },
+              "postCode": {
+                "type": "string",
+                "example": "8000",
+                "description": "Valid post code."
+              },
+              "town": {
+                "type": "string",
+                "description": "Name of the town",
+                "maxLength": 50,
+                "example": "Zürich"
+              },
+              "country": {
+                "type": "string",
+                "enum": [
+                  "CH"
+                ],
+                "example": "CH",
+                "description": "Country of the rental property according to ISO 3166-1."
+              },
+              "externalRentalPropertyId": {
+                "type": "string",
+                "description": "External ID of the rental property defined by the cooperation partner.",
+                "maxLength": 50,
+                "example": "ID-12"
+              }
+            }
+          }
+        }
+      },
+      "RentalGuaranteeQuoteIndividual": {
+        "type": "object",
+        "required": [
+          "contractType",
+          "depositAmount"
+        ],
+        "properties": {
+          "contractType": {
+            "type": "string",
+            "description": "type of contract (individual or group)",
+            "enum": [
+              "INDIVIDUAL_CONTRACT"
+            ]
+          },
+          "depositAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "insurancePremiumPeriodicities": {
+            "type": "array",
+            "description": "The list of offers for this group",
+            "items": {
+              "$ref": "#/components/schemas/PeriodicityMonthYear"
+            },
+            "example": [
+              "PER_MONTH",
+              "PER_YEAR"
+            ]
+          },
+          "insurancePremiums": {
+            "type": "array",
+            "minimum": 1,
+            "maximum": 2,
+            "readOnly": true,
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/NetAndStampDutyAmount"
+                },
+                {
+                  "$ref": "#/components/schemas/PeriodicityMonthYearObject"
+                }
+              ]
+            },
+            "example": [
+              {
+                "netAmount": 12.55,
+                "amountInclStampDuty": 13.18,
+                "currency": "CHF",
+                "periodicity": "PER_MONTH"
+              },
+              {
+                "netAmount": 150.6,
+                "amountInclStampDuty": 158.15,
+                "currency": "CHF",
+                "periodicity": "PER_YEAR"
+              }
+            ]
+          }
+        }
+      },
+      "RentalGuaranteeContractIndividual": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RentalGuaranteeQuoteIndividual"
+          },
+          {
+            "$ref": "#/components/schemas/RentalGuaranteeContractIndividualProperties"
+          }
+        ]
+      },
+      "RentalGuaranteeContractIndividualProperties": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": [
+              "tenant",
+              "rentalGuaranteeStartDate",
+              "rentalProperty",
+              "propertyOwner"
+            ],
+            "properties": {
+              "policyNr": {
+                "type": "string",
+                "example": "e8406425-9cff-4f08-bf7b-f4737c3c0cd5",
+                "readOnly": true,
+                "description": "Unique contract id. This id can be used for subsequent API calls where a contract must be referenced."
+              },
+              "tenant": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/NaturalPersonBase"
+                  },
+                  {
+                    "$ref": "#/components/schemas/IndividualTenantCommon"
+                  }
+                ]
+              },
+              "rentalGuaranteeStartDate": {
+                "type": "string",
+                "format": "date",
+                "description": "Start date of the rental period.",
+                "example": "2022-04-01"
+              },
+              "rentalProperty": {
+                "$ref": "#/components/schemas/Address"
+              },
+              "additionalTenants": {
+                "type": "array",
+                "minimum": 0,
+                "maximum": 3,
+                "items": {
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "firstname",
+                        "lastname"
+                      ],
+                      "properties": {
+                        "firstname": {
+                          "type": "string",
+                          "description": "First name of the tenant.",
+                          "maxLength": 50,
+                          "pattern": "^[^\\n\\t\\r\\v\\f]*$",
+                          "example": "Harry"
+                        },
+                        "lastname": {
+                          "type": "string",
+                          "description": "Last name of the tenant.",
+                          "maxLength": 50,
+                          "pattern": "^[^\\n\\t\\r\\v\\f]*$",
+                          "example": "Hole"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "propertyOwner": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/LegalPropertyPerson"
+                  },
+                  {
+                    "$ref": "#/components/schemas/NaturalPropertyPerson"
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "ownerType",
+                  "mapping": {
+                    "LEGAL_PERSON": "#/components/schemas/LegalPropertyPerson",
+                    "NATURAL_PERSON": "#/components/schemas/NaturalPropertyPerson"
+                  }
+                }
+              },
+              "propertyManager": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/LegalPropertyPerson"
+                  },
+                  {
+                    "$ref": "#/components/schemas/NaturalPropertyPerson"
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "ownerType",
+                  "mapping": {
+                    "LEGAL_PERSON": "#/components/schemas/LegalPropertyPerson",
+                    "NATURAL_PERSON": "#/components/schemas/NaturalPropertyPerson"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "NaturalPropertyPerson": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": [
+              "ownerType",
+              "correspondenceLanguage"
+            ],
+            "properties": {
+              "ownerType": {
+                "type": "string",
+                "description": "is a natural or a legal person",
+                "enum": [
+                  "NATURAL_PERSON"
+                ]
+              },
+              "correspondenceLanguage": {
+                "$ref": "#/components/schemas/CorrespondenceLanguageDeItFr"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/NaturalPersonBase"
+          },
+          {
+            "$ref": "#/components/schemas/Address"
+          }
+        ]
+      },
+      "LegalPropertyPerson": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": [
+              "ownerType",
+              "correspondenceLanguage"
+            ],
+            "properties": {
+              "ownerType": {
+                "type": "string",
+                "description": "is a natural or a legal person",
+                "enum": [
+                  "LEGAL_PERSON"
+                ]
+              },
+              "correspondenceLanguage": {
+                "$ref": "#/components/schemas/CorrespondenceLanguageDeItFr"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/LegalPersonBase"
+          },
+          {
+            "$ref": "#/components/schemas/Address"
+          }
+        ]
+      },
+      "TenantPrivate": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": [
+              "tenantType",
+              "firstname",
+              "lastname",
+              "birthdate"
+            ],
+            "properties": {
+              "tenantType": {
+                "type": "string",
+                "description": "Type of the tenant",
+                "enum": [
+                  "PRIVATE"
+                ],
+                "example": "PRIVATE"
+              },
+              "firstname": {
+                "type": "string",
+                "description": "First name of the tenant.",
+                "maxLength": 50,
+                "example": "Harry"
+              },
+              "lastname": {
+                "type": "string",
+                "description": "Last name of the tenant.",
+                "maxLength": 50,
+                "example": "Hole"
+              },
+              "birthdate": {
+                "type": "string",
+                "format": "date",
+                "example": "1990-07-21",
+                "description": "Date of birth of the tenant."
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/TenantCommon"
+          }
+        ]
+      },
+      "TenantCompany": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": [
+              "tenantType",
+              "companyName"
+            ],
+            "properties": {
+              "tenantType": {
+                "type": "string",
+                "description": "Type of the tenant",
+                "enum": [
+                  "COMPANY"
+                ],
+                "example": "COMPANY"
+              },
+              "companyName": {
+                "type": "string",
+                "description": "Name of the tenant company.",
+                "maxLength": 120,
+                "example": "Photovoltaic Engineering"
+              },
+              "uid": {
+                "type": "string",
+                "description": "Unique identification number assigned to the company by the Swiss governement (https://www.uid.admin.ch/)",
+                "example": "CHE-105.788.896",
+                "maxLength": 15,
+                "pattern": "^[a-zA-Z]{3}-[0-9]{3}\\.[0-9]{3}\\.[0-9]{3}$"
+              },
+              "foundationDate": {
+                "type": "string",
+                "format": "date",
+                "description": "Company foundation date, in ISO format.",
+                "example": "1985-03-21"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/TenantCommon"
+          }
+        ]
+      },
+      "TenantCommon": {
+        "type": "object",
+        "required": [
+          "correspondenceLanguage",
+          "emailAddress"
+        ],
+        "properties": {
+          "correspondenceLanguage": {
+            "type": "string",
+            "enum": [
+              "de",
+              "it",
+              "fr",
+              "en"
+            ],
+            "example": "de",
+            "description": "Correspondence language chosen by the customer according to ISO 639-1.",
+            "maxLength": 80
+          },
+          "emailAddress": {
+            "type": "string",
+            "format": "email",
+            "example": "harry.hole@mailbox.org",
+            "description": "Valid email address, used for confirmation emails."
+          },
+          "mobilePhoneNumber": {
+            "type": "string",
+            "example": "+41 79 123 45 67",
+            "description": "Valid mobile phone number mobile.",
+            "maxLength": 30
+          },
+          "phoneNumber": {
+            "type": "string",
+            "example": "+41 71 123 45 67",
+            "description": "Valid landline phone number.",
+            "maxLength": 30
+          }
+        }
+      },
+      "RentalGuaranteeContractTermination": {
+        "type": "object",
+        "required": [
+          "terminationDate"
+        ],
+        "properties": {
+          "terminationDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Termination date of the rental guarantee. Must be today or in the future.",
+            "example": "2022-12-31"
+          },
+          "propertyManagerId": {
+            "type": "string",
+            "description": "ID referencing the property manager. This can be an AXA-ID or an external ID where AXA is responsible for correct mapping.",
+            "example": "123-abc",
+            "maxLength": 50
+          },
+          "propertyOwnerId": {
+            "type": "string",
+            "description": "ID referencing the property owner. This can be an AXA-ID or an external ID where AXA is responsible for correct mapping.",
+            "example": "abc-123",
+            "maxLength": 50
+          }
+        }
+      },
+      "Amount": {
+        "type": "object",
+        "required": [
+          "amount",
+          "currency"
+        ],
+        "properties": {
+          "amount": {
+            "type": "number",
+            "format": "decimal",
+            "example": 12.55,
+            "description": "amount value"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Currency"
+          }
+        }
+      },
+      "NetAndStampDutyAmount": {
+        "type": "object",
+        "required": [
+          "netAmount",
+          "amountInclStampDuty",
+          "currency"
+        ],
+        "properties": {
+          "netAmount": {
+            "type": "number",
+            "format": "decimal",
+            "example": 12.55,
+            "description": "amount value"
+          },
+          "amountInclStampDuty": {
+            "type": "number",
+            "format": "decimal",
+            "example": 13.18,
+            "description": "amount value"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Currency"
+          }
+        }
+      },
+      "IndividualTenantCommon": {
+        "type": "object",
+        "required": [
+          "birthdate",
+          "emailAddress",
+          "currentAddress",
+          "correspondenceLanguage"
+        ],
+        "properties": {
+          "birthdate": {
+            "type": "string",
+            "format": "date",
+            "minLength": 0,
+            "maxLength": 10,
+            "description": "Date of birth of the tenant.",
+            "example": "1990-07-21"
+          },
+          "emailAddress": {
+            "type": "string",
+            "format": "email",
+            "minLength": 0,
+            "maxLength": 50,
+            "pattern": "^[^\\n\\t\\r\\v\\f]*$",
+            "description": "Valid email address, used for confirmation emails.",
+            "example": "harry.hole@mailbox.org"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 50,
+            "pattern": "^[^\\n\\t\\r\\v\\f]*$",
+            "description": "Valid mobile phone number mobile.",
+            "example": "+41 79 123 45 67"
+          },
+          "correspondenceLanguage": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2,
+            "pattern": "^[a-zA-Z0-9_-]*$",
+            "enum": [
+              "de",
+              "it",
+              "fr",
+              "en"
+            ],
+            "description": "Correspondence language chosen by the customer according to ISO 639-1.",
+            "example": "de"
+          },
+          "currentAddress": {
+            "$ref": "#/components/schemas/Address"
+          }
+        }
+      },
+      "LegalPersonBase": {
+        "type": "object",
+        "required": [
+          "companyName"
+        ],
+        "properties": {
+          "companyName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "pattern": "^[^\\n\\t\\r\\v\\f]*$",
+            "example": "myCompany"
+          }
+        }
+      },
+      "NaturalPersonBase": {
+        "type": "object",
+        "required": [
+          "gender",
+          "firstname",
+          "lastname"
+        ],
+        "properties": {
+          "gender": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]*$",
+            "enum": [
+              "MALE",
+              "FEMALE"
+            ],
+            "example": "MALE"
+          },
+          "firstname": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 40,
+            "pattern": "^[^\\n\\t\\r\\v\\f]*$",
+            "description": "First name of the tenant.",
+            "example": "Harry"
+          },
+          "lastname": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 40,
+            "pattern": "^[^\\n\\t\\r\\v\\f]*$",
+            "description": "Last name of the tenant.",
+            "example": "Hole"
+          }
+        }
+      },
+      "Address": {
+        "type": "object",
+        "required": [
+          "streetName",
+          "postCode",
+          "town",
+          "country"
+        ],
+        "properties": {
+          "streetName": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 50,
+            "pattern": "^[^\\n\\t\\r\\v\\f]*$",
+            "description": "Street name",
+            "example": "Bahnhofsstrasse"
+          },
+          "houseNumber": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 50,
+            "pattern": "^[^\\n\\t\\r\\v\\f]*$",
+            "description": "House number, including letters if applicable",
+            "example": "12a"
+          },
+          "postCode": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 50,
+            "pattern": "^[^\\n\\t\\r\\v\\f]*$",
+            "example": "8000",
+            "description": "Valid post code."
+          },
+          "town": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 50,
+            "pattern": "^[^\\n\\t\\r\\v\\f]*$",
+            "description": "Name of the town",
+            "example": "Zürich"
+          },
+          "country": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50,
+            "pattern": "^[a-zA-Z0-9_-]*$",
+            "enum": [
+              "CH"
+            ],
+            "description": "Country of the rental property according to ISO 3166-1.",
+            "example": "CH"
+          }
+        }
+      },
+      "CorrespondenceLanguageDeItFr": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2,
+        "pattern": "^[a-zA-Z0-9_-]*$",
+        "enum": [
+          "de",
+          "it",
+          "fr"
+        ],
+        "description": "Correspondence language chosen by the customer according to ISO 639-1.",
+        "example": "de"
+      },
+      "AxaError": {
+        "type": "object",
+        "required": [
+          "errorCode",
+          "errorMessage"
+        ],
+        "properties": {
+          "errorCode": {
+            "type": "string",
+            "example": "VALIDATION_ERROR",
+            "description": "Unique error code."
+          },
+          "errorMessage": {
+            "type": "string",
+            "example": "Input validation failed",
+            "description": "Short description of the error."
+          },
+          "errorReasons": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "message",
+                "code"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Attribute 'xxxx' must not be longer than 50 chars."
+                },
+                "code": {
+                  "type": "string",
+                  "example": "ERROR_012",
+                  "description": "Unique reason code for this specific reason."
+                },
+                "location": {
+                  "type": "string",
+                  "example": "/rootLevel/xxxx",
+                  "description": "Location within message where the error is related to."
+                }
+              }
+            },
+            "description": "List of error reasons if multiple reasons are related to the same error."
+          }
+        }
+      },
+      "Currency": {
+        "type": "string",
+        "enum": [
+          "CHF"
+        ],
+        "example": "CHF",
+        "description": "Currency of monetary value according to ISO 4217."
+      },
+      "PeriodicityMonthYear": {
+        "type": "string",
+        "enum": [
+          "PER_MONTH",
+          "PER_YEAR"
+        ],
+        "example": "PER_YEAR",
+        "description": "Periodicity of an object"
+      },
+      "PeriodicityMonthYearObject": {
+        "type": "object",
+        "required": [
+          "periodicity"
+        ],
+        "properties": {
+          "periodicity": {
+            "$ref": "#/components/schemas/PeriodicityMonthYear"
+          }
+        }
+      },
+      "PeriodicityMonthQuarterHalfYearYear": {
+        "type": "string",
+        "enum": [
+          "PER_MONTH",
+          "PER_QUARTER",
+          "PER_HALF_YEAR",
+          "PER_YEAR"
+        ],
+        "example": "PER_YEAR",
+        "description": "Periodicity of an object"
+      },
+      "PeriodicityMonthQuarterHalfYearYearObject": {
+        "type": "object",
+        "required": [
+          "periodicity"
+        ],
+        "properties": {
+          "periodicity": {
+            "$ref": "#/components/schemas/PeriodicityMonthQuarterHalfYearYear"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "oauth2-client-credentials": {
+        "type": "oauth2",
+        "description": "Authorization: Bearer <token>",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://maam.axa.com/maam/v2/token",
+            "scopes": {
+              "axa-ch_openapi_rental-guarantee_read": "openapi rental guarantee read scope",
+              "axa-ch_openapi_rental-guarantee_write": "openapi rental guarantee write scope"
+            }
+          }
+        }
+      }
+    },
+    "responses": {},
+    "parameters": {}
+  },
+  "tags": [
+    {
+      "name": "rental",
+      "description": "rental insurance product"
+    }
+  ],
+  "externalDocs": {
+    "description": "Developer documentation for AXA OpenAPI",
+    "url": "https://secure.axa.ch/developer"
+  },
+  "security": [
+    {
+      "oauth2-client-credentials": []
+    }
+  ]
+}
